@@ -4,6 +4,24 @@ if (savedTheme !== 'default') {
   document.body.className = `theme-${savedTheme}`;
 }
 
+window.showNotification = function(message) {
+  let popup = document.getElementById('global-popup');
+  if (!popup) {
+    popup = document.createElement('div');
+    popup.id = 'global-popup';
+    document.body.appendChild(popup);
+  }
+  popup.textContent = message;
+  
+  setTimeout(() => {
+    popup.classList.add('show');
+  }, 10);
+
+  setTimeout(() => {
+    popup.classList.remove('show');
+  }, 2500);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
 
