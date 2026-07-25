@@ -4,13 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeBoxes = document.querySelectorAll('.theme-box');
   const popup = document.getElementById('settings-popup');
 
-  let currentTheme = localStorage.getItem('theme') || 'default';
-  let currentParticles = localStorage.getItem('particles') !== 'off';
+  let activeTheme = localStorage.getItem('theme') || 'default';
+  let previewTheme = activeTheme;
+  let activeParticles = localStorage.getItem('particles') !== 'off';
 
-  toggleParticles.checked = currentParticles;
+  toggleParticles.checked = activeParticles;
 
   themeBoxes.forEach(box => {
-    if (box.getAttribute('data-theme') === currentTheme) {
+    if (box.getAttribute('data-theme') === activeTheme) {
       box.classList.add('selected');
     }
   });
@@ -20,19 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
       themeBoxes.forEach(b => b.classList.remove('selected'));
       e.target.classList.add('selected');
 
-      currentTheme = e.target.getAttribute('data-theme');
-      document.body.className = currentTheme === 'default' ? '' : `theme-${currentTheme}`;
+      previewTheme = e.target.getAttribute('data-theme');
+      document.body.className = previewTheme === 'default' ? '' : `theme-${previewTheme}`;
     });
   });
 
   saveBtn.addEventListener('click', () => {
-    localStorage.setItem('theme', currentTheme);
+    localStorage.setItem('theme', previewTheme);
     localStorage.setItem('particles', toggleParticles.checked ? 'on' : 'off');
-
+    
+    activeTheme = previewTheme;
+    
     popup.classList.add('show');
 
     setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 2000);
+      popup.classList.remove('show');
+    }, 2500);
   });
 });
