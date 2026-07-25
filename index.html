@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CoralChat</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoralChat - Home</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
 
+<div id="particles-js"></div>
 <div class="wave-bg"></div>
-<div class="fish-container">
+
+<div class="fish-container" id="fish-container">
   <div class="fish right f1">🐟</div>
   <div class="fish left f2">🐠</div>
   <div class="fish right f3">🦈</div>
@@ -21,17 +24,22 @@
   <div class="fish left f8">🦈</div>
 </div>
 
-<div id="homepage">
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <h2>Swimming over...</h2>
+</div>
+
+<div id="homepage" class="page-container">
   <h1>CoralChat</h1>
   <div class="home-icons">
-    <div class="icon-wrapper">
+    <a href="settings.html" class="icon-wrapper nav-link">
       <div class="circle"><i data-lucide="settings"></i></div>
       <span>Settings</span>
-    </div>
-    <div class="icon-wrapper" id="btn-chat">
+    </a>
+    <a href="chat.html" class="icon-wrapper nav-link">
       <div class="circle"><i data-lucide="message-square"></i></div>
       <span>Chat</span>
-    </div>
+    </a>
     <div class="icon-wrapper">
       <div class="circle"><i data-lucide="user-plus"></i></div>
       <span>Add Friend</span>
@@ -51,36 +59,6 @@
   </div>
 </div>
 
-<div id="chatpage">
-  <header class="chat-header">
-    <div class="header-logo" id="btn-home">CoralChat</div>
-    <div class="header-icons">
-      <div class="header-icon"><i data-lucide="settings"></i></div>
-      <div class="header-icon"><i data-lucide="users"></i></div>
-      <div class="header-icon"><i data-lucide="mail"></i></div>
-      <div class="header-icon"><i data-lucide="user-plus"></i></div>
-      <div class="header-icon"><i data-lucide="gem"></i></div>
-      <div class="header-icon"><i data-lucide="wallet"></i></div>
-      <div class="header-icon"><i data-lucide="log-out"></i></div>
-    </div>
-  </header>
-  <div class="chat-body">
-    <aside class="sidebar">
-      <div class="room active" data-room="General">General</div>
-      <div class="room" data-room="Room 1">Room 1</div>
-      <div class="room" data-room="Room 2">Room 2</div>
-      <div class="room" data-room="Room 3">Room 3</div>
-    </aside>
-    <main class="chat-area">
-      <div class="messages" id="message-container"></div>
-      <form class="input-area" id="message-form">
-        <input type="text" id="message-input" placeholder="Type a message..." required>
-        <button type="submit">Send</button>
-      </form>
-    </main>
-  </div>
-</div>
-
-<script type="module" src="app.js"></script>
+<script src="shared.js"></script>
 </body>
 </html>
