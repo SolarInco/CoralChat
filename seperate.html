@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoralChat - Settings</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+<div id="particles-js"></div>
+<div class="wave-bg"></div>
+
+<div class="fish-container" id="fish-container">
+  <div class="fish right f1">🐟</div>
+  <div class="fish left f2">🐠</div>
+  <div class="fish right f3">🦈</div>
+  <div class="fish left f4">🐡</div>
+  <div class="fish right f5">🐠</div>
+  <div class="fish left f6">🐟</div>
+  <div class="fish right f7">🐡</div>
+  <div class="fish left f8">🦈</div>
+</div>
+
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <h2>Swimming over...</h2>
+</div>
+
+<div id="settingspage" class="page-container">
+  <div class="settings-container">
+    <h2>Themes</h2>
+    <div class="theme-boxes">
+      <div class="theme-box" data-theme="darkgreen" style="background: black; color: #00FF00; border-color: #00FF00;">Darkgreen</div>
+      <div class="theme-box" data-theme="usa" style="background: repeating-linear-gradient(45deg, red, red 10px, blue 10px, blue 20px); color: white;">USA</div>
+      <div class="theme-box" data-theme="amber" style="background: #FFBF00; color: black; border-color: black;">Amber</div>
+      <div class="theme-box" data-theme="lightgreen" style="background: white; color: #90EE90; border-color: #90EE90;">LightGreen</div>
+      <div class="theme-box" data-theme="rose" style="background: #FFC0CB; color: white; border-color: white;">Rose</div>
+      <div class="theme-box" data-theme="default" style="background: #ADD8E6; color: #00008B;">Default</div>
+    </div>
+    
+    <h2>Environment</h2>
+    <div class="toggle-group">
+      <label for="toggle-fishes">Fishes</label>
+      <input type="checkbox" id="toggle-fishes" checked>
+    </div>
+    <div class="toggle-group">
+      <label for="toggle-particles">Particles</label>
+      <input type="checkbox" id="toggle-particles" checked>
+    </div>
+
+    <h2>Profile</h2>
+    <p>Profile features coming soon...</p>
+  </div>
+
+  <a href="index.html" class="back-btn nav-link">
+    <i data-lucide="arrow-left"></i>
+  </a>
+</div>
+
+<script src="shared.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
