@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoralChat - Chat</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+<div id="particles-js"></div>
+<div class="wave-bg"></div>
+
+<div class="fish-container" id="fish-container">
+  <div class="fish right f1">🐟</div>
+  <div class="fish left f2">🐠</div>
+  <div class="fish right f3">🦈</div>
+  <div class="fish left f4">🐡</div>
+  <div class="fish right f5">🐠</div>
+  <div class="fish left f6">🐟</div>
+  <div class="fish right f7">🐡</div>
+  <div class="fish left f8">🦈</div>
+</div>
+
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <h2>Swimming over...</h2>
+</div>
+
+<div id="chatpage" class="page-container">
+  <header class="chat-header">
+    <a href="index.html" class="header-logo nav-link">CoralChat</a>
+    <div class="header-icons">
+      <a href="index.html" class="header-icon nav-link"><i data-lucide="arrow-left"></i></a>
+      <a href="settings.html" class="header-icon nav-link"><i data-lucide="settings"></i></a>
+      <div class="header-icon"><i data-lucide="users"></i></div>
+      <div class="header-icon"><i data-lucide="mail"></i></div>
+      <div class="header-icon"><i data-lucide="user-plus"></i></div>
+      <div class="header-icon"><i data-lucide="gem"></i></div>
+      <div class="header-icon"><i data-lucide="wallet"></i></div>
+      <div class="header-icon"><i data-lucide="log-out"></i></div>
+    </div>
+  </header>
+
+  <div class="chat-body">
+    <aside class="sidebar left-sidebar">
+      <div class="room active" data-room="General">General</div>
+      <div class="room" data-room="Room 1">Room 1</div>
+      <div class="room" data-room="Room 2">Room 2</div>
+      <div class="room" data-room="Room 3">Room 3</div>
+    </aside>
+
+    <main class="chat-area">
+      <div class="messages" id="message-container"></div>
+      <form class="input-area" id="message-form">
+        <input type="text" id="message-input" placeholder="Type a message..." required>
+        <button type="submit">Send</button>
+      </form>
+    </main>
+
+    <aside class="sidebar right-sidebar">
+      <div class="online-header"><span id="online-count">0</span> Fishes Online</div>
+      <div id="online-users-list"></div>
+    </aside>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script type="module" src="chat.js"></script>
+</body>
+</html>
