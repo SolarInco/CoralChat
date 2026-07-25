@@ -1,25 +1,38 @@
-const toggleFishes = document.getElementById('toggle-fishes');
-const toggleParticles = document.getElementById('toggle-particles');
-const fishContainer = document.getElementById('fish-container');
-const particlesContainer = document.getElementById('particles-js');
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleParticles = document.getElementById('toggle-particles');
+  const saveBtn = document.getElementById('save-btn');
+  const themeBoxes = document.querySelectorAll('.theme-box');
+  const popup = document.getElementById('settings-popup');
 
-toggleFishes.checked = localStorage.getItem('fishes') !== 'off';
-toggleParticles.checked = localStorage.getItem('particles') !== 'off';
+  let currentTheme = localStorage.getItem('theme') || 'default';
+  let currentParticles = localStorage.getItem('particles') !== 'off';
 
-document.querySelectorAll('.theme-box').forEach(box => {
-  box.addEventListener('click', (e) => {
-    const theme = e.target.getAttribute('data-theme');
-    document.body.className = theme === 'default' ? '' : `theme-${theme}`;
-    localStorage.setItem('theme', theme);
+  toggleParticles.checked = currentParticles;
+
+  themeBoxes.forEach(box => {
+    if (box.getAttribute('data-theme') === currentTheme) {
+      box.classList.add('selected');
+    }
   });
-});
 
-toggleFishes.addEventListener('change', (e) => {
-  fishContainer.style.display = e.target.checked ? 'block' : 'none';
-  localStorage.setItem('fishes', e.target.checked ? 'on' : 'off');
-});
+  themeBoxes.forEach(box => {
+    box.addEventListener('click', (e) => {
+      themeBoxes.forEach(b => b.classList.remove('selected'));
+      e.target.classList.add('selected');
 
-toggleParticles.addEventListener('change', (e) => {
-  particlesContainer.style.display = e.target.checked ? 'block' : 'none';
-  localStorage.setItem('particles', e.target.checked ? 'on' : 'off');
+      currentTheme = e.target.getAttribute('data-theme');
+      document.body.className = currentTheme === 'default' ? '' : `theme-${currentTheme}`;
+    });
+  });
+
+  saveBtn.addEventListener('click', () => {
+    localStorage.setItem('theme', currentTheme);
+    localStorage.setItem('particles', toggleParticles.checked ? 'on' : 'off');
+
+    popup.classList.add('show');
+
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 2000);
+  });
 });
