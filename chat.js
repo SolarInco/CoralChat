@@ -42,7 +42,7 @@ signInAnonymously(auth).then((userCredential) => {
   
   setDoc(presenceRef, {
     uid: currentUid,
-    username: `Fish_${currentUid.substring(0, 5)}`,
+    username: `User_${currentUid.substring(0, 5)}`,
     lastSeen: serverTimestamp()
   });
 
@@ -61,12 +61,23 @@ function loadMessages(room) {
   const q = query(collection(db, "messages"), where("room", "==", room), orderBy("createdAt", "asc"));
   unsubscribeMsg = onSnapshot(q, (snapshot) => {
     messageContainer.innerHTML = '';
-    snapshot.forEach((doc) => {
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
       const div = document.createElement('div');
+      
       div.classList.add('message');
-      div.textContent = doc.data().text;
+      
+      
+      if (data.uid === currentUid) {
+        div.classList.add('sent');
+      } else {
+        div.classList.add('received');
+      }
+
+      div.textContent = data.text;
       messageContainer.appendChild(div);
     });
+    
     messageContainer.scrollTop = messageContainer.scrollHeight;
   });
 }
@@ -76,11 +87,11 @@ function listenToPresence() {
   unsubscribePresence = onSnapshot(collection(db, "presence"), (snapshot) => {
     onlineUsersList.innerHTML = '';
     let count = 0;
-    snapshot.forEach((doc) => {
+    snapshot.forEach((docSnap) => {
       count++;
       const div = document.createElement('div');
       div.classList.add('online-user');
-      div.textContent = doc.data().username;
+      div.textContent = docSnap.data().username;
       onlineUsersList.appendChild(div);
     });
     onlineCount.textContent = count;
