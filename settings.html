@@ -13,24 +13,13 @@
 <div id="particles-js"></div>
 <div class="wave-bg"></div>
 
-<div class="fish-container" id="fish-container">
-  <div class="fish right f1">🐟</div>
-  <div class="fish left f2">🐠</div>
-  <div class="fish right f3">🦈</div>
-  <div class="fish left f4">🐡</div>
-  <div class="fish right f5">🐠</div>
-  <div class="fish left f6">🐟</div>
-  <div class="fish right f7">🐡</div>
-  <div class="fish left f8">🦈</div>
-</div>
-
 <div id="loading-screen">
   <div class="spinner"></div>
-  <h2>Swimming over...</h2>
+  <h2>Saving & Swimming...</h2>
 </div>
 
 <div id="settingspage" class="page-container">
-  <div class="settings-container">
+  <div class="settings-container large-settings">
     <h2>Themes</h2>
     <div class="theme-boxes">
       <div class="theme-box" data-theme="darkgreen" style="background: black; color: #00FF00; border-color: #00FF00;">Darkgreen</div>
@@ -43,16 +32,13 @@
     
     <h2>Environment</h2>
     <div class="toggle-group">
-      <label for="toggle-fishes">Fishes</label>
-      <input type="checkbox" id="toggle-fishes" checked>
-    </div>
-    <div class="toggle-group">
-      <label for="toggle-particles">Particles</label>
+      <label for="toggle-particles">Firefly Particles</label>
       <input type="checkbox" id="toggle-particles" checked>
     </div>
 
-    <h2>Profile</h2>
-    <p>Profile features coming soon...</p>
+    <div class="settings-actions">
+      <button id="save-btn" class="save-btn">Save Settings</button>
+    </div>
   </div>
 
   <a href="index.html" class="back-btn nav-link">
