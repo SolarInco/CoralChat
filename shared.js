@@ -21,13 +21,13 @@ if (localStorage.getItem('particles') !== 'off' && particlesContainer) {
   particlesContainer.style.display = 'none';
 }
 
-// Apply Saved Theme globally
+
 const savedTheme = localStorage.getItem('theme') || 'default';
 if (savedTheme !== 'default') {
   document.body.classList.add(`theme-${savedTheme}`);
 }
 
-// Handle smooth navigation between pages
+
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
       loader.style.display = 'flex';
       setTimeout(() => {
         window.location.href = targetUrl;
-      }, 1000); // 1 second loading screen
+      }, 1000); 
     } else {
       window.location.href = targetUrl;
     }
