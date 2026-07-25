@@ -52,7 +52,7 @@ signInAnonymously(auth).then((userCredential) => {
 
   listenToPresence();
   loadMessages(currentRoom);
-}).catch((error) => console.error("Auth Error:", error));
+}).catch((error) => console.error(error));
 
 function loadMessages(room) {
   if (unsubscribeMsg) unsubscribeMsg();
@@ -67,7 +67,6 @@ function loadMessages(room) {
       
       div.classList.add('message');
       
-      
       if (data.uid === currentUid) {
         div.classList.add('sent');
       } else {
@@ -77,7 +76,6 @@ function loadMessages(room) {
       div.textContent = data.text;
       messageContainer.appendChild(div);
     });
-    
     messageContainer.scrollTop = messageContainer.scrollHeight;
   });
 }
@@ -111,6 +109,6 @@ messageForm.addEventListener('submit', async (e) => {
       uid: currentUid
     });
   } catch (error) {
-    console.error("Error sending message: ", error);
+    console.error(error);
   }
 });
