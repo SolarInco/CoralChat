@@ -551,4 +551,82 @@ input:checked + .slider:before {
   margin-bottom: 15px;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 10px;
-  color:
+  color: var(--text-color);
+}
+
+.online-user {
+  padding: 8px 0;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+#gemspage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.gems-board {
+  background: var(--chat-bg);
+  padding: 40px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 850px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.gems-board h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--title-color);
+}
+
+.days-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.day-box {
+  background: rgba(0,0,0,0.3);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  width: 80px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
+  color: var(--text-color);
+}
+
+.day-box.active {
+  transform: scale(1.35);
+  background: var(--btn-bg);
+  border-color: var(--text-color);
+  color: var(--btn-text);
+  z-index: 2;
+  margin: 0 15px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.day-label {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.gem-amount {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
