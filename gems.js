@@ -100,34 +100,4 @@ function renderBoard(canClaim) {
   if (!canClaim) {
     collectBtn.style.opacity = '0.5';
     collectBtn.style.cursor = 'not-allowed';
-    collectBtn.textContent = 'Collected Today';
-  } else {
-    collectBtn.style.opacity = '1';
-    collectBtn.style.cursor = 'pointer';
-    collectBtn.textContent = 'Collect Reward';
-    
-    collectBtn.onclick = async () => {
-      collectBtn.onclick = null;
-      await processClaim();
-    };
-  }
-}
-
-async function processClaim() {
-  const rewardAmount = rewards[userData.gemStreak - 1];
-  userData.walletGems += rewardAmount;
-  userData.lastGemClaim = Date.now();
-  
-  const userRef = doc(db, "users", currentUid);
-  await updateDoc(userRef, {
-    gemStreak: userData.gemStreak,
-    lastGemClaim: userData.lastGemClaim,
-    walletGems: userData.walletGems
-  });
-  
-  renderBoard(false);
-  
-  if (window.showNotification) {
-    window.showNotification("Daily reward collected check wallet");
-  }
-}
+    collectBtn.textContent = 'Come Back in
