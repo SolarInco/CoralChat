@@ -589,11 +589,11 @@ input:checked + .slider:before {
 
 .days-container {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   margin-bottom: 40px;
   align-items: center;
   justify-content: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .day-box {
@@ -606,4 +606,27 @@ input:checked + .slider:before {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.175,
+  transition: transform 0.3s ease, background 0.3s;
+  color: var(--text-color);
+}
+
+.day-box.active {
+  transform: scale(1.25);
+  background: var(--btn-bg);
+  border: 3px solid var(--border-color);
+  color: var(--btn-text);
+  z-index: 2;
+  margin: 0 12px;
+  box-shadow: 0 0 15px var(--border-color);
+}
+
+.day-label {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.gem-amount {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
