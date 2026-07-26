@@ -593,41 +593,17 @@ input:checked + .slider:before {
   margin-bottom: 40px;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .day-box {
   background: rgba(0,0,0,0.3);
   border: 2px solid var(--border-color);
   border-radius: 12px;
-  width: 80px;
-  height: 100px;
+  width: 70px;
+  height: 90px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
-  color: var(--text-color);
-}
-
-/* This targets exactly the day the user is on */
-.day-box.active {
-  transform: scale(1.15); /* A little bit bigger */
-  background: var(--btn-bg);
-  border: 3px solid var(--border-color); /* Highlighted outline based on theme */
-  color: var(--btn-text);
-  z-index: 2;
-  margin: 0 10px;
-  box-shadow: 0 0 15px var(--border-color); /* Extra glow for the theme */
-}
-
-.day-label {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-}
-
-.gem-amount {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
+  transition: transform 0.3s cubic-bezier(0.175,
