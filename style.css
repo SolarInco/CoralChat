@@ -610,14 +610,15 @@ input:checked + .slider:before {
   color: var(--text-color);
 }
 
+/* This targets exactly the day the user is on */
 .day-box.active {
-  transform: scale(1.35);
+  transform: scale(1.15); /* A little bit bigger */
   background: var(--btn-bg);
-  border-color: var(--text-color);
+  border: 3px solid var(--border-color); /* Highlighted outline based on theme */
   color: var(--btn-text);
   z-index: 2;
-  margin: 0 15px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+  margin: 0 10px;
+  box-shadow: 0 0 15px var(--border-color); /* Extra glow for the theme */
 }
 
 .day-label {
