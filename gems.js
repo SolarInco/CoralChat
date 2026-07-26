@@ -22,6 +22,8 @@ const collectBtn = document.getElementById('collect-btn');
 let currentUid = null;
 let userData = null;
 
+renderBoard(true, 1, true);
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUid = user.uid;
@@ -52,13 +54,16 @@ async function loadUserData() {
 function evaluateStreak() {
   const now = Date.now();
   const oneDay = 24 * 60 * 60 * 1000;
-  let { gemStreak, lastGemClaim } = userData;
+  let gemStreak = userData.gemStreak || 1;
+  let lastGemClaim = userData.lastGemClaim || 0;
   let canClaim = true;
 
   if (lastGemClaim > 0) {
-    if (now - lastGemClaim < oneDay) {
+    const timePassed = now - lastGemClaim;
+    
+    if (timePassed < oneDay) {
       canClaim = false;
-    } else if (now - lastGemClaim >= oneDay * 2) {
+    } else if (timePassed >= oneDay * 2) {
       gemStreak = 1;
     } else {
       gemStreak++;
@@ -69,10 +74,10 @@ function evaluateStreak() {
   }
 
   userData.gemStreak = gemStreak;
-  renderBoard(canClaim);
+  renderBoard(canClaim, userData.gemStreak, false);
 }
 
-function renderBoard(canClaim) {
+function renderBoard(canClaim, currentDay, isLoading) {
   daysContainer.innerHTML = '';
   
   rewards.forEach((amt, index) => {
@@ -80,7 +85,7 @@ function renderBoard(canClaim) {
     const box = document.createElement('div');
     box.className = 'day-box';
     
-    if (dayNum === userData.gemStreak) {
+    if (dayNum === currentDay) {
       box.classList.add('active');
     }
     
@@ -97,7 +102,44 @@ function renderBoard(canClaim) {
     daysContainer.appendChild(box);
   });
 
-  if (!canClaim) {
+  if (isLoading) {
+    collectBtn.textContent = 'Loading...';
+    collectBtn.style.opacity = '0.5';
+    collectBtn.style.cursor = 'wait';
+    collectBtn.onclick = null;
+  } else if (!canClaim) {
     collectBtn.style.opacity = '0.5';
     collectBtn.style.cursor = 'not-allowed';
-    collectBtn.textContent = 'Come Back in
+    collectBtn.textContent = 'Come Back in 24 Hours';
+    collectBtn.onclick = null;
+  } else {
+    collectBtn.style.opacity = '1';
+    collectBtn.style.cursor = 'pointer';
+    collectBtn.textContent = 'Collect Reward';
+    
+    collectBtn.onclick = async () => {
+      collectBtn.onclick = null;
+      collectBtn.textContent = 'Collecting...';
+      await processClaim();
+    };
+  }
+}
+
+async function processClaim() {
+  const rewardAmount = rewards[userData.gemStreak - 1];
+  userData.walletGems += rewardAmount;
+  userData.lastGemClaim = Date.now();
+  
+  const userRef = doc(db, "users", currentUid);
+  await updateDoc(userRef, {
+    gemStreak: userData.gemStreak,
+    lastGemClaim: userData.lastGemClaim,
+    walletGems: userData.walletGems
+  });
+  
+  renderBoard(false, userData.gemStreak, false);
+  
+  if (window.showNotification) {
+    window.showNotification(`Collected ${rewardAmount} gems!`);
+  }
+}
