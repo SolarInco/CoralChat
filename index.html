@@ -3,51 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoralChat - Home</title>
+  <title>REVOLT CHAT</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </head>
 <body>
 
 <div id="particles-js"></div>
 <div class="wave-bg"></div>
 
-<div id="loading-screen">
-  <div class="spinner"></div>
-  <h2>Swimming over...</h2>
-</div>
-
 <div id="homepage" class="page-container">
-  <h1>CoralChat🐬</h1>
+  <h1>REVOLT CHAT</h1>
+  
   <div class="home-icons">
-    <a href="settings.html" class="icon-wrapper nav-link">
-      <div class="circle"><i data-lucide="settings"></i></div>
-      <span>Settings</span>
-    </a>
-    <a href="chat.html" class="icon-wrapper nav-link">
+    <a href="chat.html" class="icon-wrapper">
       <div class="circle"><i data-lucide="message-square"></i></div>
       <span>Chat</span>
     </a>
-    <div class="icon-wrapper">
-      <div class="circle"><i data-lucide="user-plus"></i></div>
-      <span>Add Friend</span>
-    </div>
-    <div class="icon-wrapper">
-      <div class="circle"><i data-lucide="user"></i></div>
-      <span>Account</span>
-    </div>
-    <a href="gems.html" class="icon-wrapper nav-link">
+    <a href="gems.html" class="icon-wrapper">
       <div class="circle"><i data-lucide="gem"></i></div>
-      <span>Gems</span>
+      <span>Rewards</span>
     </a>
-    <div class="icon-wrapper">
-      <div class="circle"><i data-lucide="wallet"></i></div>
-      <span>Wallet</span>
-    </div>
+    <a href="settings.html" class="icon-wrapper">
+      <div class="circle"><i data-lucide="settings"></i></div>
+      <span>Settings</span>
+    </a>
   </div>
 </div>
 
 <script src="shared.js"></script>
+<script>lucide.createIcons();</script>
 </body>
 </html>
