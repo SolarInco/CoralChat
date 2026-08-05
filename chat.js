@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, where, setDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "REPLACE_WITH_YOUR_API_KEY",
@@ -15,100 +15,68 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const messageForm = document.getElementById('message-form');
-const messageInput = document.getElementById('message-input');
-const messageContainer = document.getElementById('message-container');
-const roomElements = document.querySelectorAll('.room');
-const onlineCount = document.getElementById('online-count');
-const onlineUsersList = document.getElementById('online-users-list');
+const msgInput = document.getElementById('message-input');
+const sendBtn = document.getElementById('send-btn');
+const messagesContainer = document.getElementById('messages-container');
+const onlineCountText = document.getElementById('online-count');
 
-let currentRoom = "General";
-let unsubscribeMsg = null;
-let unsubscribePresence = null;
 let currentUid = null;
+let onlineUsersCount = 1;
 
-roomElements.forEach(room => {
-  room.addEventListener('click', (e) => {
-    roomElements.forEach(r => r.classList.remove('active'));
-    e.target.classList.add('active');
-    currentRoom = e.target.getAttribute('data-room');
-    loadMessages(currentRoom);
-  });
-});
-
-signInAnonymously(auth).then((userCredential) => {
-  currentUid = userCredential.user.uid;
-  const presenceRef = doc(db, "presence", currentUid);
-  
-  setDoc(presenceRef, {
-    uid: currentUid,
-    username: `User_${currentUid.substring(0, 5)}`,
-    lastSeen: serverTimestamp()
-  });
-
-  window.addEventListener("beforeunload", () => {
-    deleteDoc(presenceRef);
-  });
-
-  listenToPresence();
-  loadMessages(currentRoom);
-}).catch((error) => console.error(error));
-
-function loadMessages(room) {
-  if (unsubscribeMsg) unsubscribeMsg();
-  messageContainer.innerHTML = '';
-  
-  const q = query(collection(db, "messages"), where("room", "==", room), orderBy("createdAt", "asc"));
-  unsubscribeMsg = onSnapshot(q, (snapshot) => {
-    messageContainer.innerHTML = '';
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      const div = document.createElement('div');
-      
-      div.classList.add('message');
-      
-      if (data.uid === currentUid) {
-        div.classList.add('sent');
-      } else {
-        div.classList.add('received');
-      }
-
-      div.textContent = data.text;
-      messageContainer.appendChild(div);
-    });
-    messageContainer.scrollTop = messageContainer.scrollHeight;
-  });
-}
-
-function listenToPresence() {
-  if (unsubscribePresence) unsubscribePresence();
-  unsubscribePresence = onSnapshot(collection(db, "presence"), (snapshot) => {
-    onlineUsersList.innerHTML = '';
-    let count = 0;
-    snapshot.forEach((docSnap) => {
-      count++;
-      const div = document.createElement('div');
-      div.classList.add('online-user');
-      div.textContent = docSnap.data().username;
-      onlineUsersList.appendChild(div);
-    });
-    onlineCount.textContent = count;
-  });
-}
-
-messageForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const text = messageInput.value.trim();
-  if (!text) return;
-  messageInput.value = '';
-  try {
-    await addDoc(collection(db, "messages"), {
-      text: text,
-      room: currentRoom,
-      createdAt: serverTimestamp(),
-      uid: currentUid
-    });
-  } catch (error) {
-    console.error(error);
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUid = user.uid;
+  } else {
+    signInAnonymously(auth).catch((error) => console.error(error));
   }
 });
+
+const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
+
+onSnapshot(q, (snapshot) => {
+  messagesContainer.innerHTML = '';
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message');
+    
+    if (data.uid === currentUid) {
+      msgDiv.classList.add('sent');
+    } else {
+      msgDiv.classList.add('received');
+    }
+    
+    msgDiv.textContent = data.text;
+    messagesContainer.appendChild(msgDiv);
+  });
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+});
+
+async function sendMessage() {
+  const text = msgInput.value.trim();
+  if (text !== '' && currentUid) {
+    msgInput.value = '';
+    await addDoc(collection(db, "messages"), {
+      text: text,
+      uid: currentUid,
+      createdAt: serverTimestamp()
+    });
+  }
+}
+
+sendBtn.addEventListener('click', sendMessage);
+
+msgInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+
+function updateOnlineCount(count) {
+  onlineCountText.textContent = `${count} revolters online`;
+}
+
+setInterval(() => {
+  onlineUsersCount++;
+  updateOnlineCount(onlineUsersCount);
+}, 15000);
