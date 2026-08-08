@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDWnr-9qpfzW_y-LMuTorItQTUHJVvhLDk",
@@ -19,20 +19,40 @@ const msgInput = document.getElementById('message-input');
 const sendBtn = document.getElementById('send-btn');
 const messagesContainer = document.getElementById('messages-container');
 const onlineCountText = document.getElementById('online-count');
+const onlineUsersList = document.getElementById('online-users-list');
 
 let currentUid = null;
-let onlineUsersCount = 1;
+let tempUsername = "Revolter_" + Math.floor(Math.random() * 10000);
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUid = user.uid;
+    const userStatusRef = doc(db, "status", currentUid);
+    await setDoc(userStatusRef, { online: true, username: tempUsername });
+
+    window.addEventListener("beforeunload", () => {
+      deleteDoc(userStatusRef);
+    });
   } else {
     signInAnonymously(auth).catch((error) => {});
   }
 });
 
-const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
+const statusQuery = query(collection(db, "status"));
+onSnapshot(statusQuery, (snapshot) => {
+  onlineCountText.textContent = `${snapshot.size} revolters online`;
+  onlineUsersList.innerHTML = '';
+  
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    const userDiv = document.createElement('div');
+    userDiv.classList.add('online-user-item');
+    userDiv.textContent = data.username || "Anonymous";
+    onlineUsersList.appendChild(userDiv);
+  });
+});
 
+const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
 onSnapshot(q, (snapshot) => {
   messagesContainer.innerHTML = '';
   snapshot.forEach((doc) => {
@@ -71,12 +91,3 @@ msgInput.addEventListener('keypress', (e) => {
     sendMessage();
   }
 });
-
-function updateOnlineCount(count) {
-  onlineCountText.textContent = `${count} revolters online`;
-}
-
-setInterval(() => {
-  onlineUsersCount++;
-  updateOnlineCount(onlineUsersCount);
-}, 15000);
