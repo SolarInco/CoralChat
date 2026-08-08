@@ -28,23 +28,25 @@ onAuthStateChanged(auth, async (user) => {
 
     try {
         const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
+        if (userDoc.exists() && userDoc.data().username) {
             currentUsername = userDoc.data().username;
         }
-    } catch (e) {
-        console.error(e);
+    } catch (error) {
+        console.error("Error loading user profile:", error);
     }
 
+    // Set up presence in Realtime Database
     const userStatusRef = ref(rtdb, '/status/' + user.uid);
     set(userStatusRef, { state: 'online', username: currentUsername });
     onDisconnect(userStatusRef).remove();
 
-    const q = query(
+    // Query messages in ascending order
+    const messagesQuery = query(
         collection(db, "messages"), 
         orderBy("createdAt", "asc")
     );
 
-    onSnapshot(q, (snapshot) => {
+    onSnapshot(messagesQuery, (snapshot) => {
         const container = document.getElementById("messages-container");
         if (!container) return;
         
@@ -70,7 +72,7 @@ onAuthStateChanged(auth, async (user) => {
                     <span class="sender-id">${sender}</span>
                     <span class="timestamp">${timeString}</span>
                 </div>
-                <div class="message-text">${data.text || ""}</div>
+                <div class="message-text">${escapeHtml(data.text || "")}</div>
             `;
 
             container.appendChild(msgDiv);
@@ -80,35 +82,48 @@ onAuthStateChanged(auth, async (user) => {
     });
 });
 
+// Presence listener for online user counter
 const onlineCountRef = ref(rtdb, '/status');
 onValue(onlineCountRef, (snapshot) => {
     const data = snapshot.val();
     const count = data ? Object.keys(data).length : 0;
-    const sidePanelHeader = document.querySelector("#side-panel h2");
+    const countElement = document.getElementById("online-count");
     
-    if (sidePanelHeader) {
-        const label = count === 1 ? "Revolter" : "Revolters";
-        sidePanelHeader.innerHTML = `Online: <span id="online-count">${count}</span> ${label}`;
+    if (countElement) {
+        countElement.innerText = count;
     }
 });
 
-document.getElementById("send-button").addEventListener("click", async () => {
+function sendMessage() {
     const input = document.getElementById("message-input");
     const text = input.value.trim();
     
     if (text.length > 0 && auth.currentUser) {
         input.value = "";
-        await addDoc(collection(db, "messages"), {
+        addDoc(collection(db, "messages"), {
             text: text,
             uid: auth.currentUser.uid,
             username: currentUsername,
             createdAt: serverTimestamp()
+        }).catch((error) => {
+            console.error("Error adding document: ", error);
         });
     }
-});
+}
+
+function escapeHtml(unsafeText) {
+    return unsafeText
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
+document.getElementById("send-button").addEventListener("click", sendMessage);
 
 document.getElementById("message-input").addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
-        document.getElementById("send-button").click();
+        sendMessage();
     }
 });
