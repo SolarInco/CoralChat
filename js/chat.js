@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
@@ -18,7 +18,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const rtdb = getDatabase(app);
 
-let currentUsername = "User";
+let currentUsername = "Revolter";
 
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
@@ -59,7 +59,7 @@ onAuthStateChanged(auth, async (user) => {
                 timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
 
-            const sender = data.username ? data.username : "Anon";
+            const sender = data.username ? data.username : "Revolter";
             const isMe = user.uid === data.uid;
 
             const msgDiv = document.createElement("div");
@@ -84,9 +84,11 @@ const onlineCountRef = ref(rtdb, '/status');
 onValue(onlineCountRef, (snapshot) => {
     const data = snapshot.val();
     const count = data ? Object.keys(data).length : 0;
-    const countElement = document.getElementById("online-count");
-    if (countElement) {
-        countElement.innerText = count;
+    const sidePanelHeader = document.querySelector("#side-panel h2");
+    
+    if (sidePanelHeader) {
+        const label = count === 1 ? "Revolter" : "Revolters";
+        sidePanelHeader.innerHTML = `Online: <span id="online-count">${count}</span> ${label}`;
     }
 });
 
