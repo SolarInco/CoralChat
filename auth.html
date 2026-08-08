@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVOLT - Login & Signup</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1 id="auth-title">Sign Up</h1>
+        <p id="auth-subtitle">Create an account to join REVOLT CHAT.</p>
+        
+        <div class="form-group" id="username-group">
+            <input type="text" id="username-input" placeholder="Username (max 12 chars)" maxlength="12">
+        </div>
+        <div class="form-group">
+            <input type="email" id="email-input" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <input type="password" id="password-input" placeholder="Password (min 6 chars)">
+        </div>
+        
+        <button id="auth-action-btn">Create Account</button>
+        <p id="auth-error" class="error-msg"></p>
+
+        <p class="toggle-text">
+            <span id="toggle-prompt">Already have an account?</span> 
+            <a href="#" id="toggle-mode">Log in here</a>
+        </p>
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>
