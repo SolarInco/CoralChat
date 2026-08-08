@@ -1,9 +1,9 @@
 :root {
-  --bg-color: black;
+  --bg-color: #000000;
   --text-color: #ffffff;
   --title-color: #e60000;
   --border-color: #e60000;
-  --btn-bg: black;
+  --btn-bg: #000000;
   --btn-text: #e60000;
   --header-bg: #0a0000;
   --neon-glow: 0 0 10px #e60000, inset 0 0 5px #e60000;
@@ -57,6 +57,7 @@ input {
     background-color: var(--bg-color);
     color: var(--text-color);
     outline: none;
+    transition: box-shadow 0.2s ease;
 }
 
 input:focus {
@@ -73,11 +74,13 @@ button {
     font-weight: bold;
     cursor: pointer;
     margin-top: 10px;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
 button:hover {
     box-shadow: var(--neon-glow);
+    background-color: var(--title-color);
+    color: #ffffff;
 }
 
 .error-msg {
