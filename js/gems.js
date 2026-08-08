@@ -1,14 +1,14 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_API_KEY",
-  authDomain: "REPLACE_WITH_YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
-  storageBucket: "REPLACE_WITH_YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
-  appId: "REPLACE_WITH_YOUR_APP_ID"
+  apiKey: "AIzaSyDWnr-9qpfzW_y-LMuTorItQTUHJVvhLDk",
+  authDomain: "revolt-chat-4fada.firebaseapp.com",
+  projectId: "revolt-chat-4fada",
+  storageBucket: "revolt-chat-4fada.firebasestorage.app",
+  messagingSenderId: "488624788181",
+  appId: "1:488624788181:web:1571ba31aafb8c1441c85c"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -29,7 +29,7 @@ onAuthStateChanged(auth, async (user) => {
     currentUid = user.uid;
     await loadUserData();
   } else {
-    signInAnonymously(auth).catch((error) => console.error(error));
+    signInAnonymously(auth).catch((error) => {});
   }
 });
 
