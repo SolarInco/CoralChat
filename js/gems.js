@@ -5,6 +5,7 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstati
 const firebaseConfig = {
   apiKey: "AIzaSyDWnr-9qpfzW_y-LMuTorItQTUHJVvhLDk",
   authDomain: "revolt-chat-4fada.firebaseapp.com",
+  databaseURL: "https://revolt-chat-4fada-default-rtdb.firebaseio.com/",
   projectId: "revolt-chat-4fada",
   storageBucket: "revolt-chat-4fada.firebasestorage.app",
   messagingSenderId: "488624788181",
