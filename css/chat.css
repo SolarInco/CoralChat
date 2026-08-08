@@ -1,11 +1,11 @@
 :root {
-  --bg-color: black;
+  --bg-color: #000000;
   --bg-image: none;
   --text-color: #ffffff;
   --title-color: #e60000;
   --icon-color: #e60000;
   --border-color: #e60000;
-  --btn-bg: black;
+  --btn-bg: #000000;
   --btn-text: #e60000;
   --chat-bg: rgba(230, 0, 0, 0.08);
   --header-bg: #0a0000;
@@ -16,8 +16,7 @@
     box-sizing: border-box;
 }
 
-body {
-    display: flex;
+html, body {
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -27,6 +26,10 @@ body {
     background-image: var(--bg-image);
     color: var(--text-color);
     overflow: hidden;
+}
+
+body {
+    display: flex;
 }
 
 #side-panel {
@@ -64,7 +67,7 @@ body {
     gap: 12px;
 }
 
-/* Custom Scrollbar */
+/* Custom Webkit Scrollbars */
 #messages-container::-webkit-scrollbar {
     width: 8px;
 }
@@ -76,6 +79,10 @@ body {
 #messages-container::-webkit-scrollbar-thumb {
     background: var(--border-color);
     border-radius: 4px;
+}
+
+#messages-container::-webkit-scrollbar-thumb:hover {
+    background: #ff1a1a;
 }
 
 #input-container {
@@ -95,10 +102,12 @@ body {
     color: var(--text-color);
     font-size: 0.95rem;
     outline: none;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 #message-input:focus {
     box-shadow: var(--neon-glow);
+    border-color: var(--title-color);
 }
 
 #send-button {
@@ -110,11 +119,17 @@ body {
     cursor: pointer;
     font-weight: bold;
     font-size: 0.95rem;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
 #send-button:hover {
     box-shadow: var(--neon-glow);
+    background-color: var(--title-color);
+    color: #ffffff;
+}
+
+#send-button:active {
+    transform: scale(0.98);
 }
 
 .message {
