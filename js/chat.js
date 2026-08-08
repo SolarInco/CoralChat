@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getDatabase, ref, onValue, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -18,54 +18,66 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const rtdb = getDatabase(app);
 
-signInAnonymously(auth);
+let currentUsername = "User";
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        const userStatusRef = ref(rtdb, '/status/' + user.uid);
-        set(userStatusRef, { state: 'online' });
-        onDisconnect(userStatusRef).remove();
-
-        const q = query(
-            collection(db, "messages"), 
-            orderBy("createdAt", "asc")
-        );
-
-        onSnapshot(q, (snapshot) => {
-            const container = document.getElementById("messages-container");
-            if (!container) return;
-            
-            container.innerHTML = ""; 
-
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                
-                let timeString = "Just now";
-                if (data.createdAt) {
-                    const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-                    timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                }
-
-                const senderId = data.uid ? data.uid.substring(0, 6) : "Anon";
-                const isMe = user.uid === data.uid;
-
-                const msgDiv = document.createElement("div");
-                msgDiv.className = `message ${isMe ? "sent" : "received"}`;
-                
-                msgDiv.innerHTML = `
-                    <div class="message-info">
-                        <span class="sender-id">ID: ${senderId}</span>
-                        <span class="timestamp">${timeString}</span>
-                    </div>
-                    <div class="message-text">${data.text || ""}</div>
-                `;
-
-                container.appendChild(msgDiv);
-            });
-
-            container.scrollTop = container.scrollHeight;
-        });
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.href = "auth.html";
+        return;
     }
+
+    try {
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+            currentUsername = userDoc.data().username;
+        }
+    } catch (e) {
+        console.error(e);
+    }
+
+    const userStatusRef = ref(rtdb, '/status/' + user.uid);
+    set(userStatusRef, { state: 'online', username: currentUsername });
+    onDisconnect(userStatusRef).remove();
+
+    const q = query(
+        collection(db, "messages"), 
+        orderBy("createdAt", "asc")
+    );
+
+    onSnapshot(q, (snapshot) => {
+        const container = document.getElementById("messages-container");
+        if (!container) return;
+        
+        container.innerHTML = ""; 
+
+        snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            
+            let timeString = "Just now";
+            if (data.createdAt) {
+                const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            const sender = data.username ? data.username : "Anon";
+            const isMe = user.uid === data.uid;
+
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${isMe ? "sent" : "received"}`;
+            
+            msgDiv.innerHTML = `
+                <div class="message-info">
+                    <span class="sender-id">${sender}</span>
+                    <span class="timestamp">${timeString}</span>
+                </div>
+                <div class="message-text">${data.text || ""}</div>
+            `;
+
+            container.appendChild(msgDiv);
+        });
+
+        container.scrollTop = container.scrollHeight;
+    });
 });
 
 const onlineCountRef = ref(rtdb, '/status');
@@ -87,6 +99,7 @@ document.getElementById("send-button").addEventListener("click", async () => {
         await addDoc(collection(db, "messages"), {
             text: text,
             uid: auth.currentUser.uid,
+            username: currentUsername,
             createdAt: serverTimestamp()
         });
     }
