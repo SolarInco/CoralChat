@@ -1,53 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>REVOLT CHAT</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVOLT CHAT</title>
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 <body>
+    <div id="side-panel">
+        <h2>Online: <span id="online-count">0</span> Revolters</h2>
+    </div>
+    
+    <div id="chat-app">
+        <div id="messages-container" class="messages"></div>
+        <div id="input-container">
+            <input type="text" id="message-input" placeholder="Type a message...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
 
-<div id="particles-js"></div>
-<div class="wave-bg"></div>
-
-<div id="homepage" class="page-container">
-  <h1>REVOLT CHAT</h1>
-  
-  <div class="home-icons">
-    <a href="html/chat.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="message-square"></i></div>
-      <span>Chat</span>
-    </a>
-    <a href="html/profile.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="user"></i></div>
-      <span>Profile</span>
-    </a>
-    <a href="html/friends.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="users"></i></div>
-      <span>Friends</span>
-    </a>
-    <a href="html/gems.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="gem"></i></div>
-      <span>Rewards</span>
-    </a>
-    <a href="html/wallet.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="wallet"></i></div>
-      <span>Wallet</span>
-    </a>
-    <a href="html/auth.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="key"></i></div>
-      <span>Accounts</span>
-    </a>
-    <a href="html/settings.html" class="icon-wrapper">
-      <div class="circle"><i data-lucide="settings"></i></div>
-      <span>Settings</span>
-    </a>
-  </div>
-</div>
-
-<script src="js/shared.js"></script>
-<script>lucide.createIcons();</script>
+    <script type="module" src="js/chat.js"></script>
 </body>
 </html>
